@@ -1,0 +1,27 @@
+services:
+  redis:
+    image: ${DOCKER_REGISTRY-}redis
+    build:
+      context: .
+      dockerfile: Redis/Dockerfile
+    ports:
+      - "5000:5000"
+      - "5001:5001"
+
+  redis.cach:
+     image: redis:latest
+     container_name: redis_container
+     restart: always
+     ports:
+      - "6379:6379"
+  redis.database:
+     image: postgres:latest
+     container_name: redis.database
+     environment:
+      POSTGRES_USER: ayman
+      POSTGRES_PASSWORD: ayman
+      POSTGRES_DB: redis
+     ports:
+      - "5432:5432"
+
+     

@@ -1,6 +1,7 @@
-
+using Microsoft.EntityFrameworkCore;
 using Redis.CashService;
 using Redis.Models;
+using StackExchange.Redis;
 
 namespace Redis
 {
@@ -13,7 +14,11 @@ namespace Redis
             // Add services to the container.
 
             builder.Services.AddControllers();
-            builder.Services.AddDbContext<RevisionContext>();
+            builder.Services.AddDbContext<RevisionContext>(options =>
+                options.UseNpgsql(
+                    "Host=redis.database;Port=5432;Database=redis;Username=ayman;Password=ayman"
+                )
+            );
             builder.Services.AddMemoryCache();
             builder.Services.AddScoped<MemoryCacheService>();
             builder.Services.AddStackExchangeRedisCache(cfg =>
@@ -22,7 +27,9 @@ namespace Redis
             });
             //builder.Services.AddSingleton<IConnectionMultiplexer>(cfg =>
             //{
-            //    var config = ConfigurationOptions.Parse(builder.Configuration.GetConnectionString("redis") ?? "");
+            //    var config = ConfigurationOptions.Parse(
+            //        builder.Configuration.GetConnectionString("redis") ?? ""
+            //    );
             //    return ConnectionMultiplexer.Connect(config);
             //});
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -42,7 +49,6 @@ namespace Redis
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 
