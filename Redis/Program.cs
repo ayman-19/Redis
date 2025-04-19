@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.EntityFrameworkCore;
 using Redis.CashService;
 using Redis.Models;
@@ -45,12 +46,13 @@ namespace Redis
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
+            app.UseStaticFiles();
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
 
             app.MapControllers();
+            app.UseRouting();
 
             app.Run();
         }

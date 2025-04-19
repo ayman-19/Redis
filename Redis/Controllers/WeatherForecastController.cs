@@ -12,7 +12,16 @@ namespace Redis.Controllers
     {
         private static readonly string[] Summaries = new[]
         {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+            "Freezing",
+            "Bracing",
+            "Chilly",
+            "Cool",
+            "Mild",
+            "Warm",
+            "Balmy",
+            "Hot",
+            "Sweltering",
+            "Scorching",
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
@@ -20,7 +29,12 @@ namespace Redis.Controllers
         private readonly IMemoryCache _cache;
         private readonly MemoryCacheService _memoryCache;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger, RevisionContext revision, IMemoryCache cache, MemoryCacheService memoryCache)
+        public WeatherForecastController(
+            ILogger<WeatherForecastController> logger,
+            RevisionContext revision,
+            IMemoryCache cache,
+            MemoryCacheService memoryCache
+        )
         {
             _logger = logger;
             this.revision = revision;
@@ -39,6 +53,13 @@ namespace Redis.Controllers
         public IActionResult GetWithMemoryCache()
         {
             return Ok(_memoryCache.GetOrCreateCache(Request.Path));
+        }
+
+        [HttpPost(Name = "UploadImage")]
+        //[ValidateAntiForgeryToken]
+        public IActionResult Upload(IFormFile file)
+        {
+            return Ok(file.FileName);
         }
     }
 }
